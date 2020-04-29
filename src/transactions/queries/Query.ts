@@ -10,19 +10,26 @@ export abstract class Query<T> extends Transactions {
 
   isEncrypted = false
 
-  async execute(publicKey: string, privateKey: string = ''): Promise<any> {
+  async execute(publicKey: string, privateKey: string = '', seen?: any[]): Promise<any> {
     this.publicKey = publicKey
     this.privateKey = privateKey
     if (!this.isEncrypted) {
       return this.executeCall(this.getEndPoint(), JSON.stringify(this.getData()))
     } else {
       try {
-        const result = await this.executeCall(this.getEndPoint(), JSON.stringify(this.getData()))
+        let result = await this.executeCall(this.getEndPoint(), JSON.stringify(this.getData()))
+        if (seen && Array.isArray(seen) && seen.length > 0) {
+          result = this.seenFilter(result, seen)
+        }
         return this.decrypt(result)
       } catch (error) {
         throw error
       }
     }
+  }
+
+  seenFilter(data: any, seen: any[]) {
+    return data;
   }
 
   getEndPoint(): string {

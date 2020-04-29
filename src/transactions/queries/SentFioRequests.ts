@@ -22,6 +22,13 @@ export class SentFioRequests extends Query<SentFioRequestResponse> {
     return data
   }
 
+  public seenFilter(data: any, seen: any[]): any {
+    let result = data.requests;
+    result = result.filter((record: { fio_request_id: any; status: any, payee_fio_public_key: any }) => (!seen.find(
+        (seenOne) => seenOne.fio_request_id === record.fio_request_id && seenOne.payee_fio_public_key === record.payee_fio_public_key && seenOne.status === record.status)))
+    return {...data, requests: result}
+  }
+
   public decrypt(result: any): any {
     if (result.requests.length > 0) {
       const requests: FioRequest[] = []

@@ -22,6 +22,13 @@ export class GetObtData extends Query<GetObtDataResponse> {
     return { fio_public_key: this.fio_public_key, limit: this.limit || null, offset: this.offset || null }
   }
 
+  public seenFilter(data: any, seen: any[]): any {
+    let result = data.obt_data_records;
+    result = result.filter((record: { fio_request_id: any; status: any, payee_fio_public_key: any }) => (!seen.find(
+        (seenOne) => seenOne.fio_request_id === record.fio_request_id && seenOne.payee_fio_public_key === record.payee_fio_public_key && seenOne.status === record.status)))
+    return {...data, obt_data_records: result}
+  }
+
   public decrypt(result: any): any {
     if (result.obt_data_records && result.obt_data_records.length > 0) {
       const obtDataRecords: GetObtDataRecord[] = []

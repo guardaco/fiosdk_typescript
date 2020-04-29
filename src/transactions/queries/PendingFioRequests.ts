@@ -22,6 +22,12 @@ export class PendingFioRequests extends Query<PendingFioRequestsResponse> {
     return data
   }
 
+  public seenFilter(data: any, seen: any[]): any {
+    let result = data.requests;
+    result = result.filter((record: { fio_request_id: any; status: any }) => (!seen.find((seenOne) => seenOne.fio_request_id === record.fio_request_id)))
+    return {...data, requests: result}
+  }
+
   public decrypt(result: any): any {
     if (result.requests.length > 0) {
       const requests: FioRequest[] = []

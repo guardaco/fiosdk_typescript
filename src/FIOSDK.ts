@@ -558,10 +558,11 @@ export class FIOSDK {
    * @param limit Number of request to return. If omitted, all requests will be returned.
    * @param offset First request from list to return. If omitted, 0 is assumed.
    * @param tokenCode Code of the token to filter results
+   * @param seen Already seen transactions.
    */
-  public getObtData(limit?: number, offset?: number, tokenCode?: string): Promise<GetObtDataResponse> {
+  public getObtData(seen?: any[], limit?: number, offset?: number, tokenCode?: string): Promise<GetObtDataResponse> {
     const getObtDataRequest = new queries.GetObtData(this.publicKey, limit, offset, tokenCode)
-    return getObtDataRequest.execute(this.publicKey, this.privateKey)
+    return getObtDataRequest.execute(this.publicKey, this.privateKey, seen)
   }
 
   /**
@@ -672,10 +673,11 @@ export class FIOSDK {
    *
    * @param limit Number of request to return. If omitted, all requests will be returned.
    * @param offset First request from list to return. If omitted, 0 is assumed.
+   * @param seen Already seen transactions.
    */
-  public getPendingFioRequests(limit?: number, offset?: number): Promise<PendingFioRequestsResponse> {
+  public getPendingFioRequests(seen?: any[], limit?: number, offset?: number): Promise<PendingFioRequestsResponse> {
     const pendingFioRequests = new queries.PendingFioRequests(this.publicKey, limit, offset)
-    return pendingFioRequests.execute(this.publicKey, this.privateKey)
+    return pendingFioRequests.execute(this.publicKey, this.privateKey, seen)
   }
 
   /**
@@ -683,10 +685,11 @@ export class FIOSDK {
    *
    * @param limit Number of request to return. If omitted, all requests will be returned.
    * @param offset First request from list to return. If omitted, 0 is assumed.
+   * @param seen Already seen transactions.
    */
-  public getSentFioRequests(limit?: number, offset?: number): Promise<SentFioRequestResponse> {
+  public getSentFioRequests(seen?: any[], limit?: number, offset?: number): Promise<SentFioRequestResponse> {
     const sentFioRequest = new queries.SentFioRequests(this.publicKey, limit, offset)
-    return sentFioRequest.execute(this.publicKey, this.privateKey)
+    return sentFioRequest.execute(this.publicKey, this.privateKey, seen)
   }
 
   /**
